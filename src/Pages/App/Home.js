@@ -8,13 +8,20 @@ import {Fragment} from 'react';
 import Particles from "react-tsparticles";
 import {Redirect} from 'react-router-dom';
 import URLS from "../../URLS";
+import {connect} from 'react-redux';
+import {requestUserData} from '../../redux/actions/signinpage';
 
-const Home = ({signout, loggedin, id}) => {
+const mapStateToProps = state => ({
+  name: state.changeUserData.name,
+  ranking: state.changeUserData.ranking
+});
+
+const mapDispatchToProps = dispatch => ({
+  setData: id => dispatch(requestUserData(id))
+});
+
+const Home = ({signout, loggedin, id, name, ranking, setData}) => {
     let convertedImgWidth = window.innerWidth/2;
-    let [data, setData] = useState({
-        name: "",
-        ranking: 0,
-    });
     const [faceInputField, setFaceInputField] = useState({
         value: ""
     });
@@ -100,14 +107,8 @@ const Home = ({signout, loggedin, id}) => {
     };
 
     useEffect(()=> {
-        fetch(`http://192.168.1.9:3002/profile${id}`)
-            .then(resp => resp.text())
-            .then(result => {
-                setData({
-                    name: JSON.parse(result).name,
-                    ranking: JSON.parse(result).ranking,
-                })
-            });
+      console.log(id);
+        setData(id);
 
         if (findFaces.find) {
             const faceFormData = new FormData();
@@ -153,7 +154,7 @@ const Home = ({signout, loggedin, id}) => {
                             body: raw,
                             redirect: 'follow'
                         };
-                        fetch(`http://192.168.1.9:3002/image`, requestOptions)
+                        fetch(`http://192.168.1.38:3002/image`, requestOptions)
                             .then(response => response.text())
                             .then(result => {
                                 if (JSON.parse(result)[0]==="success") {
@@ -180,7 +181,7 @@ const Home = ({signout, loggedin, id}) => {
         inputPlaceHolder: "Image Url"
     };
     return (
-        loggedin[0] ?
+        loggedin ?
         <Fragment>
             <Particles id="tsparticles"
                        options={{
@@ -217,8 +218,8 @@ const Home = ({signout, loggedin, id}) => {
                        }}
                        className={'particles'}/>
             <Header type={'loggedin'} signout={signout}/>
-            <p className={"white tc f3"}>{`${data.name}`}, your current ranking is...</p>
-            <p className={"white tc f2"}>#{`${data.ranking}`}</p>
+            <p className={"white tc f3"}>{`${name}`}, your current ranking is...</p>
+            <p className={"white tc f2"}>#{`${ranking}`}</p>
             <p className={"black tc f5"}>This magic brain will detect faces in your pictures. Give it a try.</p>
             <HerramientaDetectarRostro btn_text={api_tool.btn_text}
                                        api_callback={api_tool.api_callback}
@@ -234,4 +235,4 @@ const Home = ({signout, loggedin, id}) => {
     );
 };
 
-export default Home;
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

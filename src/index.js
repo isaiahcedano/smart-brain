@@ -4,9 +4,25 @@ import App from "./App";
 import reportWebVitals from './reportWebVitals';
 import 'tachyons';
 import './index.css';
+import { Provider } from 'react-redux';
+import {
+  changeLoginState,
+  changeUserData
+} from './redux/reducers/signinpage';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { createLogger } from 'redux-logger';
+import thunkMiddleware from 'redux-thunk';
+
+const logger = createLogger();
+
+const rootReducer = combineReducers({changeLoginState, changeUserData});
+
+const store = createStore(rootReducer, applyMiddleware(thunkMiddleware, logger));
 
 ReactDOM.render(
-    <App />,
+    <Provider store={store}>
+      <App />,
+    </Provider>,
   document.getElementById('root')
 );
 

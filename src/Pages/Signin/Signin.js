@@ -4,7 +4,7 @@ import Particles from "react-tsparticles";
 import URLS from "../../URLS";
 import {Redirect} from 'react-router-dom';
 
-const Signin = ({loggedIn, login}) => {
+const Signin = ({loggedin, login}) => {
     const [submittedEmail, submitEmail] = useState("");
 
     const [submittedPassword, submitPassword] = useState("");
@@ -35,11 +35,11 @@ const Signin = ({loggedIn, login}) => {
                 redirect: 'follow'
             };
 
-            fetch("http://192.168.1.9:3002/signin", requestOptions)
+            fetch("http://192.168.1.38:3002/signin", requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     if (JSON.parse(result)[0]==="success") {
-                        login([true, JSON.parse(result)[1].id]);
+                        login(true, JSON.parse(result)[1].id);
                     } else {
                         alert("Incorrect email or password.");
                     }
@@ -51,7 +51,7 @@ const Signin = ({loggedIn, login}) => {
 
 
     return (
-        !loggedIn[0] ?
+        !loggedin ?
         <Fragment>
             <Header type={"loggedout"}/>
             <Particles id="tsparticles"

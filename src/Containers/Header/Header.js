@@ -5,7 +5,7 @@ import URLS from "../../URLS";
 const Header = ({type, signout=()=>{}}) => {
     const types = ['loggedout', 'loggedin'];
     const logout = () => {
-        signout([false, ""])
+        signout(false, "")
     };
     return (
         <nav className={'ma3 mb5 flex'}>

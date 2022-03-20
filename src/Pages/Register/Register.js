@@ -41,12 +41,12 @@ const Register = ({setLogin}) => {
                 redirect: 'follow'
             };
 
-            fetch("http://192.168.1.9:3002/register", requestOptions)
+            fetch("http://192.168.1.38:3002/register", requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     if (JSON.parse(result)[0]==="success") {
                         setSignIn(true);
-                        setLogin([false, JSON.parse(result)[1].id])
+                        setLogin(false, JSON.parse(result)[1].id)
                     } else {
                         alert("Email already exists. Log in?");
                     }

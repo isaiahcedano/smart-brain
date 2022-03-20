@@ -8,28 +8,35 @@ import {
     Route,
     Redirect,
 } from "react-router-dom";
-import {useState} from 'react';
+import {connect} from 'react-redux';
+import {signin} from './redux/actions/signinpage';
 
-const App = () => {
-    const [loggedIn, setLogin] = useState([false, ""]);
+const mapDispatchToProps = dispatch => ({
+  setLogin: (login, id) => dispatch(signin(login, id))
+});
 
+const mapStateToProps = state => ({
+  loggedin: state.changeLoginState.loggedin,
+  id: state.changeLoginState.id,
+});
+
+const App = ({setLogin, loggedin, id}) => {
     return (
         <Router>
             <Switch>
                 <Route exact path={URLS.HOME}>
-                    <Home signout={setLogin} loggedin={loggedIn} id={loggedIn[1]}/>
+                    <Home signout={setLogin} loggedin={loggedin} id={id}/>
                 </Route>
                 <Route exact path={URLS.REGISTER}>
                     <Register setLogin={setLogin}/>
                 </Route>
                 <Route exact path={URLS.SIGNIN}>
-                    <Signin loggedIn={loggedIn} login={setLogin}/>
+                    <Signin loggedin={loggedin} login={setLogin}/>
                 </Route>
-
                 <Redirect to={URLS.HOME}/>
             </Switch>
         </Router>
     );
 };
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

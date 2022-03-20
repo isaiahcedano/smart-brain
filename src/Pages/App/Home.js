@@ -67,8 +67,8 @@ const Home = ({signout, loggedin, id, name, ranking, setData}) => {
     const resizeImage = (imgUrl, imgWidth) => {
         let converted_url = "";
         const kraken = new Kraken({
-            api_key: "7a20d22ae0fc8b6315eeff138002a99f",
-            api_secret: "08129aaf86f7afc4181618e596167e75a0839788",
+            api_key: "cc73a9cd1330e374f11aed8e68154e06",
+            api_secret: "0093fc1f62a39aa2e49ad3e27ccf1b0108cf59c0",
         });
 
         const krakenData = {
@@ -154,16 +154,9 @@ const Home = ({signout, loggedin, id, name, ranking, setData}) => {
                             body: raw,
                             redirect: 'follow'
                         };
-                        fetch(`http://192.168.1.38:3002/image`, requestOptions)
-                            .then(response => response.text())
-                            .then(result => {
-                                if (JSON.parse(result)[0]==="success") {
-                                    setData({
-                                        name: JSON.parse(result)[1].name,
-                                        ranking: JSON.parse(result)[1].ranking,
-                                    })
-                                }
-                            }).catch(error => console.log);
+                        fetch(`https://cedano-smart-brain-api.herokuapp.com/image`, requestOptions).then(() =>{
+                          setData(id);
+                        })
                     }
                 })
                 .catch(() => {

@@ -19,7 +19,7 @@ export const requestUserData = (userId) => (dispatch) => {
   console.log(dispatch, "dispatch");
   console.log(userId, "userId");
   dispatch({ type: REQUEST_USER_DATA_PENDING });
-  fetch(`http://192.168.1.38:3002/profile${userId}`)
+  fetch(`https://cedano-smart-brain-api.herokuapp.com/profile${userId}`)
       .then(resp => resp.text())
       .then(result => {
           dispatch({

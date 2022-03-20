@@ -35,7 +35,7 @@ const Signin = ({loggedin, login}) => {
                 redirect: 'follow'
             };
 
-            fetch("http://192.168.1.38:3002/signin", requestOptions)
+            fetch("https://cedano-smart-brain-api.herokuapp.com/signin", requestOptions)
                 .then(response => response.text())
                 .then(result => {
                     if (JSON.parse(result)[0]==="success") {
